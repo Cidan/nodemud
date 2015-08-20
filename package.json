@@ -1,0 +1,34 @@
+{
+  "name": "nodemud",
+  "version": "0.0.1",
+  "description": "A complete MUD engine written in NodeJS/Coffeescript.",
+  "main": "bin/nodemud.coffee",
+  "dependencies": {
+    "async": "^0.2.9",
+    "date-utils": "^1.2.13",
+    "elasticsearch": "^2.2.0",
+    "memwatch": "^0.2.2",
+    "mkdirp": "^0.3.5",
+    "printf": "^0.1.2",
+    "uuid": "^1.4.1",
+    "walk": "^2.2.1",
+    "webkit-devtools-agent": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cidan/nodemud.git"
+  },
+  "keywords": [
+    "MUD"
+  ],
+  "author": "Antonio Lobato",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/Cidan/nodemud/issues"
+  },
+  "homepage": "https://github.com/Cidan/nodemud"
+}
