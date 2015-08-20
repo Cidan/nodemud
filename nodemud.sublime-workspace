@@ -164,6 +164,14 @@
 			}
 		},
 		{
+			"file": "/C/Users/Antonio/git/reporter/reporter.coffee",
+			"settings":
+			{
+				"buffer_size": 1625,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "lib/map.js",
 			"settings":
 			{
@@ -184,6 +192,22 @@
 			"settings":
 			{
 				"buffer_size": 6742,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/area.coffee",
+			"settings":
+			{
+				"buffer_size": 49,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 397,
 				"line_ending": "Unix"
 			}
 		},
@@ -213,9 +237,14 @@
 		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 288.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -305,6 +334,15 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Antonio/Desktop/profile.ps1",
+		"/C/cmder/bin/subl.bat",
+		"/C/Users/Antonio/mudlet-data",
+		"/C/Users/Antonio/id_gitlab",
+		"/C/Users/Antonio/ntuser.ini",
+		"/C/Program Files/Sublime Text 3/sublime.py",
+		"/C/Program Files/Sublime Text 3/Makefile",
+		"/C/Program Files/cmder/vendor/profile.ps1",
+		"/C/Program Files/cmder/bin/Readme.md",
 		"/Q/nodemud/lib/interp/build.coffee",
 		"/Q/nodemud/lib/log.coffee",
 		"/Q/nodemud/lib/color.js",
@@ -423,16 +461,7 @@
 		"/M/jmc3610/test.lua",
 		"/M/jmc3610/test.pl",
 		"/C/Users/Antonio/git/jmc/sources/ttcoreex/JmcObj.cpp",
-		"/C/Users/Antonio/git/jmc/sources/ttcoreex/JmcObj.h",
-		"/C/Users/Antonio/git/jmc/sources/ttcoreex/TTCOREEX.C",
-		"/M/jmc3610/global.set",
-		"/M/jmc3610/settings/Default.opt",
-		"/M/jmc3610/Default.set",
-		"/C/Users/Antonio/git/jmc/sources/ScriptPage.cpp",
-		"/C/Users/Antonio/git/jmc/sources/groupedpage.h",
-		"/C/Users/Antonio/git/jmc/sources/language.ini",
-		"/C/Users/Antonio/git/jmc/sources/MainFrm.cpp",
-		"/C/Users/Antonio/git/jmc/sources/res/bmp00001_.bmp"
+		"/C/Users/Antonio/git/jmc/sources/ttcoreex/JmcObj.h"
 	],
 	"find":
 	{
@@ -563,7 +592,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -587,11 +616,11 @@
 						{
 							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
 						},
-						"translation.x": -0.0,
+						"translation.x": 0.0,
 						"translation.y": 45.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -619,7 +648,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -635,8 +664,8 @@
 						"selection":
 						[
 							[
-								2689,
-								2689
+								2569,
+								2569
 							]
 						],
 						"settings":
@@ -644,14 +673,42 @@
 							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 710.0,
+						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "/C/Users/Antonio/git/reporter/reporter.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1625,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "lib/map.js",
 					"semi_transient": false,
 					"settings":
@@ -675,11 +732,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "lib/hub.coffee",
 					"semi_transient": false,
 					"settings":
@@ -691,8 +748,8 @@
 						"selection":
 						[
 							[
-								132,
-								132
+								25,
+								25
 							]
 						],
 						"settings":
@@ -703,11 +760,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "lib/interp/game.coffee",
 					"semi_transient": false,
 					"settings":
@@ -731,11 +788,67 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
+					"file": "lib/area.coffee",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 49,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 397,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								397,
+								397
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
 					"file": "lib/room.coffee",
 					"semi_transient": false,
 					"settings":
@@ -747,8 +860,8 @@
 						"selection":
 						[
 							[
-								1108,
-								1108
+								393,
+								393
 							]
 						],
 						"settings":
@@ -759,11 +872,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 10,
 					"file": "lib/interp.coffee",
 					"semi_transient": false,
 					"settings":
@@ -787,11 +900,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 11,
 					"file": "lib/entity.coffee",
 					"semi_transient": false,
 					"settings":
@@ -815,7 +928,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -860,6 +973,7 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "",
 	"project": "nodemud.sublime-project",
 	"replace":
 	{
@@ -869,6 +983,7 @@
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -1001,8 +1116,13 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"opst",
+				"C:\\Users\\Antonio\\git\\opstat\\opstat.sublime-project"
+			],
 			[
 				"",
 				"C:\\Users\\Antonio\\git\\opstat\\opstat.sublime-project"
@@ -1013,6 +1133,7 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],

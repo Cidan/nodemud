@@ -53,12 +53,15 @@ class Player extends Entity
 			return
 		@interp.parse this, input
 	
-	prompt: () ->
+	prompt: () =>
 		if not @interp
 			log.error "Player has no interp for a prompt."
 			return
-		@interp.prompt()
+		@interp.prompt(this)
 
+	sendRaw: (text, cb) =>
+		@socket.write "#{text.color()}", "UTF8", cb
+	
 	send: (text, newline, cb) ->
 		if not text
 			log.error "Sending a player an empty text string!"

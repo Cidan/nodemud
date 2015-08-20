@@ -30,9 +30,9 @@ class Room extends Entity
 		this.set "_y", y, true
 		this.set "_z", z, true
 		Room.matrix[x][y][z] = this
-		this.set "md5", Room.generate_location_hash(coord), true
+		@set "md5", Room.generate_location_hash(coord), true
 		if !nosave
-			this.save()
+			@save()
 
 	get_coordinates: () ->
 		return [@vars._x, @vars._y, @vars._z]
@@ -46,38 +46,42 @@ class Room extends Entity
 	set_description: (description) ->
 		@vars.description = description
 
-	has_exit: (dir) =>
+	get_neighbor_coord: (dir) =>
 		coord = @get_coordinates()
 		switch dir
 			when 'east'
-				return Room.exists [coord[0] + 1, coord[1], coord[2]]
+				return [coord[0] + 1, coord[1], coord[2]]
 			when 'west'
-				return Room.exists [coord[0] - 1, coord[1], coord[2]]
+				return [coord[0] - 1, coord[1], coord[2]]
 			when 'north'
-				return Room.exists [coord[0], coord[1] + 1, coord[2]]
+				return [coord[0], coord[1] + 1, coord[2]]
 			when 'south'
-				return Room.exists [coord[0], coord[1] - 1, coord[2]]
+				return [coord[0], coord[1] - 1, coord[2]]
 			when 'up'
-				return Room.exists [coord[0], coord[1], coord[2] + 1]
+				return [coord[0], coord[1], coord[2] + 1]
 			when 'down'
-				return Room.exists [coord[0], coord[1], coord[2] - 1]
+				return [coord[0], coord[1], coord[2] - 1]
 			else
 				return false
+
+	has_exit: (dir) =>
+		coord = @get_coordinates()
+		return Room.exists(@get_neighbor_coord(dir))
 		
 	save: () =>
 		if @_saving
 			return
 		@_saving = true
-		log.debug "Staring room save of " + this.uuid() + " (" + this.get_name + ")"
+		log.debug "Staring room save of " + this.uuid() + " (" + this.get_name() + ")"
 		self = this
 		filename = "/home/alobato/nodemud/data/rooms/" + this.vars.md5[0] +
 		"/" + this.vars.md5[1] + 
 		"/" + this.vars.md5[2] +
 		"/" + this.vars.md5
-		fs.writeFile filename, JSON.stringify {
+		fs.writeFile filename, JSON.stringify({
 			vars: @vars,
 			objs: @in_room.object
-		}, () =>
+		}), () =>
 			@_saving = false
 			log.debug "#{@uuid()} saved."
 

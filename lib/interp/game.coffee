@@ -8,6 +8,7 @@ class Game extends Interp
 		@onMulti ['s', 'south'], @south
 		@onMulti ['u', 'up'], @up
 		@onMulti ['d', 'down'], @down
+		@on 'build', @build
 
 	parse: (player, input) =>
 		inputs = input.split(" ")
@@ -17,6 +18,11 @@ class Game extends Interp
 			player.send "Huh?"
 		else
 			@emit cmd, player, args
+
+	build: (player, args) =>
+		player.setInterp 'build'
+		player.set 'building', true
+		player.send 'Building enabled.'
 
 	look: (player, args) =>
 		room = player.room
