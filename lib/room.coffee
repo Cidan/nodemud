@@ -15,51 +15,60 @@ class Room extends Entity
 		Room.list[this.uuid()] = this
 		@in_room = {}
 
+	# Set the coordinates of the room in the world space.
+	# Note, this makes the room live/active.
 	set_coordinates: (coord, nosave) =>
 		x = coord[0]
 		y = coord[1]
 		z = coord[2]
-		if @vars._x and @vars._y and @vars._z
-			delete Room.matrix[@vars._x][@vars._y][@vars._z]
+		Room.matrix[x] ?= []
+		Room.matrix[x][y] ?= []
 		
-		if Room.matrix[x] == undefined
-			Room.matrix[x] = []
-		if Room.matrix[x][y] == undefined
-			Room.matrix[x][y] = []
-		this.set "_x", x, true
-		this.set "_y", y, true
-		this.set "_z", z, true
+		@unlink_room()
+		
+		@set "_x", x, true
+		@set "_y", y, true
+		@set "_z", z, true
 		Room.matrix[x][y][z] = this
 		@set "md5", Room.generate_location_hash(coord), true
 		if !nosave
 			@save()
 
-	get_coordinates: () ->
+	# Get a list of the coords of this room, x, y, z.
+	get_coordinates: () =>
 		return [@vars._x, @vars._y, @vars._z]
 
-	set_name: (name) ->
-		@vars.name = name
+	# Unlink a room from the world entirely.
+	unlink_room: () =>
+		try
+			delete Room.matrix[@get('_x')][@get('_y')][@get('_z')]
+		return true
 
-	get_name: () ->
-		return @vars.name
+	# Set the room name
+	set_name: (name) =>
+		@set 'name', name
 
-	set_description: (description) ->
-		@vars.description = description
+	# Get the room name
+	get_name: () =>
+		return @get 'name'
+
+	set_description: (description) =>
+		@set 'description', description
 
 	get_neighbor_coord: (dir) =>
 		coord = @get_coordinates()
 		switch dir
-			when 'east'
+			when 'east', 'e'
 				return [coord[0] + 1, coord[1], coord[2]]
-			when 'west'
+			when 'west', 'w'
 				return [coord[0] - 1, coord[1], coord[2]]
-			when 'north'
+			when 'north', 'n'
 				return [coord[0], coord[1] + 1, coord[2]]
-			when 'south'
+			when 'south', 's'
 				return [coord[0], coord[1] - 1, coord[2]]
-			when 'up'
+			when 'up', 'u'
 				return [coord[0], coord[1], coord[2] + 1]
-			when 'down'
+			when 'down', 'd'
 				return [coord[0], coord[1], coord[2] - 1]
 			else
 				return false
@@ -95,76 +104,6 @@ class Room extends Entity
 		type = entity.type()
 		if @in_room[type]
 			delete @in_room[type][entity.uuid()]
-
-#Room.prototype.save = function(){
-#	if (room._saving)
-#		return
-#	this._saving = true;
-#	Log.debug("Staring room save of " + this.uuid() + " (" + this.get_name + ")");
-#	var self = this;
-#	var filename = "/home/alobato/nodemud/data/rooms/" + this.vars.md5[0] +
-#	"/" + this.vars.md5[1] + 
-#	"/" + this.vars.md5[2] +
-#	"/" + this.vars.md5;
-#	var save_map = {
-#		vars: this.vars,
-#		objs: this.in_room.object
-#	}
-#	fs.writeFile(filename, JSON.stringify(save_map), function(){
-#		self._saving = false;
-#		Log.debug(self.uuid() + " saved.");
-#	});
-#}
-
-#Room.prototype.add_entity = function(entity){
-#	var type = entity.type();
-#	if (this.in_room[type] == undefined)
-#		this.in_room[type] = {};
-#	this.in_room[type][entity.uuid()] = entity;
-#}
-#
-#Room.prototype.remove_entity = function(entity){
-#	var type = entity.type();
-#	if (this.in_room[type])
-#		delete this.in_room[type][entity.uuid()];
-#}
-#Room.prototype.get_coordinates = function(){
-#	return [this.vars._x, this.vars._y, this.vars._z];
-#}
-#
-#Room.prototype.set_name = function(name){
-#	this.vars.name = name;
-#}
-#
-#Room.prototype.get_name = function(){
-#	return this.vars.name;
-#}
-#
-#Room.prototype.set_description = function(str){
-#	this.vars.description = str;
-#}
-
-
-
-#Room.prototype.set_coordinates = function(x, y, z, nosave){
-#	if (this.vars._x && this.vars._y && this.vars_z){
-#		delete Room.matrix[this.vars._x][this.vars._y][this.vars._z];
-#	}
-#	if (Room.matrix[x] == undefined)
-#		Room.matrix[x] = [];
-#	if (Room.matrix[x][y] == undefined){
-#		Room.matrix[x][y] = [];
-#	}
-#	if (Room.matrix[x][y][z] == undefined){
-#		this.vars._x = x;
-#		this.vars._y = y;
-#		this.vars._z = z;
-#		Room.matrix[x][y][z] = this;
-#		this.vars.md5 = Room.generate_location_hash(x, y, z);
-#		if (!nosave)
-#			this.save();
-#	}
-#}
 
 # Static class methods
 Room.matrix = []
@@ -215,62 +154,4 @@ Room.generate_location_hash = (coord) ->
 
 	return Common.hash coord[0] + " " + coord[1] + " " + coord[2], "md5"
 
-module.exports = Room;
-
-#Room.load_all = function(cb){
-#	Log.info("Loading the world");
-#	var walker = walk.walk("/home/alobato/nodemud/data/rooms");
-#	walker.on("file", function(root, fileStats, next){
-#		fs.readFile(root + "/" + fileStats.name, function(err, save_map){
-#			save_map = JSON.parse(save_map);
-#			new Room(save_map.vars);
-#			Log.debug(fileStats.name + " (" + save_map.vars.name + ") loaded.");
-#			// TODO: load save_map.objs
-#			next();
-#		});
-#	});
-#	walker.on("end", function(){
-#		Log.info("World load {Gcomplete{x!");
-#		cb();
-#	});
-#}
-
-#Room.create_default = function(){
-#	var room = new Room();
-#	room.set_name("Starting Room");
-#	room.set_description("Starting Description");
-#	room.set_coordinates(0, 0, 0);
-#	
-#	var room2 = new Room();
-#	room2.set_name("Room 2");
-#	room2.set_description("Starting Description");
-#	room2.set_coordinates(1, 0, 0);
-#}
-
-#Room.exists = function(x, y, z){
-#	if (Room.matrix[x] && Room.matrix[x][y] && Room.matrix[x][y][z])
-#		return Room.matrix[x][y][z];
-#	return false;
-#}
-
-#function Room(data){
-#	Room.super_.call(this);
-#	if (data){
-#		this.update_uuid(data.uuid);
-#		this.vars = data;
-#		this.set_coordinates(this.vars._x, this.vars._y, this.vars._z, true);
-#	}
-#	Room.list[this.uuid()] = this;
-#	this.in_room = {};
-#}
-#util.inherits(Room, Entity);
-#
-#Room.matrix = [];
-#Room.list = {};
-
-#Room.init = function(){
-#	Log = global.log;
-#	Log.info("Creating room hash directories");
-#	Common.make_hash_dir("/home/alobato/nodemud/data/rooms/", 3);
-#}
-
+module.exports = Room

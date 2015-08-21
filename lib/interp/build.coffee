@@ -1,6 +1,7 @@
 class Build extends Interp
 	constructor: () ->
-		@valid_dirs = ['north', 'east', 'south', 'west', 'up', 'down']
+		@valid_dirs = ['north', 'n', 'east', 'e', 'south', 's', 'west', 'w', 'up', 'u', 'down', 'd']
+		@on 'autodig', @autodig
 		@on 'build', @build
 		@on 'dig', @dig
 
@@ -21,16 +22,29 @@ class Build extends Interp
 	# stop the game interpreter from reading the
 	# input.
 	onGame: (player, args, cmd) =>
+		if cmd in @valid_dirs and not player.room.has_exit cmd
+			@dig player, cmd
 		return true
 
 	prompt: (player) =>
-		text = "{RBuilding{x #{player.room.vars.name} (#{player.room.vars._x} #{player.room.vars._y} #{player.room.vars._z})>"
+		text = "{R"
+		if player.get('autodig')
+			text += "Autodig "
+		text += "Building{x #{player.room.vars.name} (#{player.room.vars._x} #{player.room.vars._y} #{player.room.vars._z})>"
 		player.sendRaw "\n\n#{text}"
 
 	build: (player, args) =>
 		player.set "building", false
 		player.setInterp 'game'
 		player.send "Building disabled."
+
+	autodig: (player, args) =>
+		if player.get('autodig')
+			player.set('autodig', false)
+			player.send "Autodig disabled."
+		else
+			player.set('autodig', true)
+			player.send "Autodig enabled."
 
 	dig: (player, args) =>
 		if not args

@@ -18,4 +18,4 @@ class Server
 		@server.listen @port
 		log.info "Server is read to rock on port {G" + @port + "{x"
 
-module.exports = Server;
+module.exports = Server
