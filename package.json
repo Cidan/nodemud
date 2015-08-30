@@ -5,14 +5,12 @@
   "main": "bin/nodemud.coffee",
   "dependencies": {
     "async": "^0.2.9",
+    "config": "^1.15.0",
     "date-utils": "^1.2.13",
-    "elasticsearch": "^2.2.0",
-    "memwatch": "^0.2.2",
     "mkdirp": "^0.3.5",
     "printf": "^0.1.2",
     "uuid": "^1.4.1",
-    "walk": "^2.2.1",
-    "webkit-devtools-agent": "^0.1.1"
+    "walk": "^2.2.1"
   },
   "devDependencies": {},
   "scripts": {

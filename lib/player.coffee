@@ -10,7 +10,7 @@ class Player extends Entity
 
 	load: (cb) =>
 		md5 = Common.hash(@get('name'), 'md5')
-		filename = "/home/alobato/nodemud/data/players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
+		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
 		fs.readFile filename, (err, saved_data) ->
 			if err
 				cb err
@@ -101,7 +101,7 @@ class Player extends Entity
 # Static methods
 Player.init = (cb) ->
 	log.info "Making player hash directories"
-	Common.make_hash_dir "/home/alobato/nodemud/data/players/", 3
+	Common.make_hash_dir "#{config.get('data_dir')}players/", 3
 	cb()
 
 module.exports = Player

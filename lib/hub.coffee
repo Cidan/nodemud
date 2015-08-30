@@ -2,9 +2,9 @@ events = require 'events'
 async = require 'async'
 
 # Static classes/objects
+global.config = require 'config'
 global.log = require './log'
 global.map = require './map'
-
 # Classes
 global.Common = require './common'
 global.Server = require './server'

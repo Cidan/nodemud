@@ -113,7 +113,7 @@ Room.list = {}
 
 Room.init = (cb) ->
 	log.info "Creating room hash directories"
-	Common.make_hash_dir "/home/alobato/nodemud/data/rooms/", 3
+	Common.make_hash_dir "#{config.get('data_dir')}rooms/", 3
 	cb()
 
 Room.create_default = () ->
@@ -137,7 +137,7 @@ Room.exists = (coord) ->
 
 Room.load_all = (cb) ->
 	log.info "Loading previously saved rooms."
-	walker = walk.walk "/home/alobato/nodemud/data/rooms"
+	walker = walk.walk "#{config.get('data_dir')}/rooms"
 	walker.on "file", (root, fileStats, next) ->
 		fs.readFile root + "/" + fileStats.name, (err, save_map) ->
 			save_map = JSON.parse save_map
