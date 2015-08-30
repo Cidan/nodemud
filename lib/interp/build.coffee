@@ -4,6 +4,7 @@ class Build extends Interp
 		@on 'autodig', @autodig
 		@on 'build', @build
 		@on 'dig', @dig
+		@on 'set', @set
 
 	parse: (player, input) =>
 		inputs = input.split(" ")
@@ -61,12 +62,12 @@ class Build extends Interp
 			return
 
 		new_room = new Room
-		new_room.set_name "New Room"
-		new_room.set_description "This room is not yet rated."
 
 		# This should always go last, so it populates/saves into the world after everything else is in place.
 		new_room.set_coordinates player.room.get_neighbor_coord(dir)
 		player.send "Room created #{dir}."
+
+	set: (player, args) =>
 
 
 module.exports = new Build

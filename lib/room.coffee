@@ -12,6 +12,8 @@ class Room extends Entity
 			@updateMetaData()
 			@vars = data
 			@set_coordinates [@vars._x, @vars._y, @vars._z], true
+		
+		Room.set_defaults(this)
 		Room.list[this.uuid()] = this
 		@in_room = {}
 
@@ -134,7 +136,7 @@ Room.exists = (coord) ->
 	return false
 
 Room.load_all = (cb) ->
-	log.info "Loading the world, ha ha ha"
+	log.info "Loading previously saved rooms."
 	walker = walk.walk "/home/alobato/nodemud/data/rooms"
 	walker.on "file", (root, fileStats, next) ->
 		fs.readFile root + "/" + fileStats.name, (err, save_map) ->
@@ -151,7 +153,12 @@ Room.load = (coord) ->
 	log.warn "Not yet on Room.load"
 
 Room.generate_location_hash = (coord) ->
-
 	return Common.hash coord[0] + " " + coord[1] + " " + coord[2], "md5"
+
+# Set default variables for this room.
+Room.set_defaults = (room) ->
+	rv = room.vars
+	rv.name ?= "New Room"
+	rv.description ?= "This room is not yet rated."
 
 module.exports = Room
