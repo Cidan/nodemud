@@ -90,7 +90,7 @@ class Player extends Entity
 			@room = newRoom
 		else
 			# TODO: move to recall or safe room.
-			log.debug "Room does not exist in toRoom: #{x} #{y} #{z}"
+			log.debug "Attempted to move player to room that does not exist: #{coord[0]} #{coord[1]} #{coord[2]}"
 	
 	from_room: () =>
 		if @room

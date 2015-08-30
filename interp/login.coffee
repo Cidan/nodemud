@@ -61,6 +61,7 @@ class Login extends Interp
 			player.state = 'NEW_PASSWORD'
 		else
 			player.send "Logging you in!"
+			player.to_room [0,0,0]
 			player.setInterp 'game'
 			player.parse 'look'
 

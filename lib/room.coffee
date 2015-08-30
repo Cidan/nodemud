@@ -85,15 +85,16 @@ class Room extends Entity
 		@_saving = true
 		log.debug "Staring room save of " + this.uuid() + " (" + this.get_name() + ")"
 		self = this
-		filename = "/home/alobato/nodemud/data/rooms/" + this.vars.md5[0] +
+		filename = "#{config.get('data_dir')}rooms/" + this.vars.md5[0] +
 		"/" + this.vars.md5[1] + 
 		"/" + this.vars.md5[2] +
 		"/" + this.vars.md5
 		fs.writeFile filename, JSON.stringify({
 			vars: @vars,
 			objs: @in_room.object
-		}), () =>
+		}), (err) =>
 			@_saving = false
+			return log.error("Unable to save room #{@uuid()}: #{err.message}") if err
 			log.debug "#{@uuid()} saved."
 
 	add_entity: (entity) ->
@@ -117,15 +118,15 @@ Room.init = (cb) ->
 	cb()
 
 Room.create_default = () ->
-	room = new Room()
+	room = new Room
 	room.set_name "Starting Room"
 	room.set_description "Starting Description"
 	room.set_coordinates [0, 0, 0]
 
-	room2 = new Room()
-	room.set_name "Room 2"
-	room.set_description "Starting Description"
-	room.set_coordinates [1, 0, 0]
+	room2 = new Room
+	room2.set_name "Room 2"
+	room2.set_description "Starting Description"
+	room2.set_coordinates [1, 0, 0]
 
 Room.exists = (coord) ->
 	x = coord[0]
@@ -136,9 +137,11 @@ Room.exists = (coord) ->
 	return false
 
 Room.load_all = (cb) ->
+	found = false
 	log.info "Loading previously saved rooms."
 	walker = walk.walk "#{config.get('data_dir')}/rooms"
 	walker.on "file", (root, fileStats, next) ->
+		found = true
 		fs.readFile root + "/" + fileStats.name, (err, save_map) ->
 			save_map = JSON.parse save_map
 			new Room save_map.vars
@@ -147,6 +150,10 @@ Room.load_all = (cb) ->
 			next()
 	walker.on "end", () ->
 		log.info "World load {Gcomplete{x!"
+		if not found
+			log.info "No rooms were found, creating default rooms."
+			Room.create_default()
+			log.info "Default rooms created."
 		cb()
 
 Room.load = (coord) ->

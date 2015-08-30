@@ -23,7 +23,7 @@ class Build extends Interp
 	# stop the game interpreter from reading the
 	# input.
 	onGame: (player, args, cmd) =>
-		if cmd in @valid_dirs and not player.room.has_exit cmd
+		if cmd in @valid_dirs and not player.room.has_exit(cmd) and player.get('autodig')
 			@dig player, cmd
 		return true
 
