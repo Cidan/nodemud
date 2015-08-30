@@ -17,10 +17,10 @@ Interp.interps = {}
 # Load our interps.
 Interp.init = (cb) ->
 	log.info "Loading interps..."
-	walker = walk.walk "/home/alobato/nodemud/lib/interp/"
+	walker = walk.walk "interp/"
 	walker.on "file", (root, fileStats, next) ->
 		log.info "Loading interp: #{fileStats.name}"
-		Interp.interps[fileStats.name] = require "#{root}/#{fileStats.name}"
+		Interp.interps[fileStats.name] = require "../#{root}/#{fileStats.name}"
 		next()
 	walker.on "end", () ->
 		log.info "Interps loaded."

@@ -23,7 +23,7 @@ class Login extends Interp
 		player.buffer " your e-mail, etc.", true
 		player.buffer "\n\n tl;dr, {RUse a secret, but throw-away password.{x\n\n", true
 		player.flush()
-		player.send "Give me a password for #{@player.get 'name'}:"
+		player.send "Give me a password for #{player.get 'name'}:"
 
 	handle_GetName: (player, name) =>
 		if not @isValidName(name)
@@ -40,21 +40,21 @@ class Login extends Interp
 			player.send "Did I get that right, #{name}?"
 			player.state = 'CONFIRM_NAME'
 
-	handle_ConfirmName: (player, resp) ->
+	handle_ConfirmName: (player, resp) =>
 		if Common.isYes(resp)
-			@show_passwordHelp()
+			@show_passwordHelp(player)
 			player.state = 'NEW_PASSWORD'
 		else
 			player.set 'name', ''
 			player.send "Okay, what is it then?"
 			player.state = 'GET_NAME'
 
-	handle_NewPassword: (player, pwd) ->
+	handle_NewPassword: (player, pwd) =>
 		player.set 'password', Common.hash(pwd)
 		player.send "Retype your password to confirm:"
 		player.state = 'CONFIRM_PASSWORD'
 
-	handle_ConfirmPassword: (player, pwd) ->
+	handle_ConfirmPassword: (player, pwd) =>
 		if player.get('password') != Common.hash(pwd)
 			player.send "The passwords you entered did not match. Let's start over.", true
 			player.send "Give me a password for #{@player.get 'name'}:"
@@ -64,7 +64,7 @@ class Login extends Interp
 			player.setInterp 'game'
 			player.parse 'look'
 
-	handle_OldPassword: (player, pwd) ->
+	handle_OldPassword: (player, pwd) =>
 		log.debug "In old password"
 		new_hash = Common.hash pwd
 		old_hash = player.get('tmp_player').vars.password
