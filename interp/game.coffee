@@ -9,6 +9,7 @@ class Game extends Interp
 		@onMulti ['u', 'up'], @up
 		@onMulti ['d', 'down'], @down
 		@on 'build', @build
+		@on 'save', @save
 
 	parse: (player, input) =>
 		inputs = input.split(" ")
@@ -63,6 +64,12 @@ class Game extends Interp
 		player.to_room(target_room.get_coordinates())
 		@look(player)
 
+	save: (player) =>
+		player.save (err) ->
+			if err
+				player.send "Uh oh, there was an error saving you. The error has been logged."
+			else
+				player.send "Your player has been saved."
 	east: (player) =>
 		@move player, 'east'
 	west: (player) =>

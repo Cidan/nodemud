@@ -17,6 +17,21 @@ class Player extends Entity
 			else
 				cb null, JSON.parse(saved_data)
 
+	save: (cb) =>
+		if @_saving
+			return
+		@_saving = true
+		md5 = Common.hash(@get('name'), 'md5')
+		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
+		fs.writeFile filename, JSON.stringify({
+			vars: @vars
+		}), (err) =>
+			@_saving = false
+			log.debug("Error saving #{@uuid()}: #{err.message}") if err
+			return cb(err) if err and cb
+			log.debug "#{@uuid()} saved."
+			cb(null) if cb
+
 	loadFromData: (data) =>
 		@vars = data.vars
 		@updateMetaData()
@@ -83,6 +98,8 @@ class Player extends Entity
 	to_room: (coord) =>
 		if @room
 			@from_room()
+		# If coord is null, something wrong happened and we're moving them to room [0,0,0]
+		coord ?= [0,0,0]
 		newRoom = Room.exists coord
 		if newRoom
 			@set 'room', coord

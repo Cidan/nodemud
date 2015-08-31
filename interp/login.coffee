@@ -64,9 +64,9 @@ class Login extends Interp
 			player.to_room [0,0,0]
 			player.setInterp 'game'
 			player.parse 'look'
+			player.save()
 
 	handle_OldPassword: (player, pwd) =>
-		log.debug "In old password"
 		new_hash = Common.hash pwd
 		old_hash = player.get('tmp_player').vars.password
 		if old_hash != new_hash
