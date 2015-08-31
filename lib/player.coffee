@@ -48,16 +48,24 @@ class Player extends Entity
 		@rl.on 'line', (line) =>
 			@parse line
 
-	linkdead: () ->
+	linkdead: () =>
 
-	disconnect: () ->
+	disconnect: () =>
 		@socket.end()
+		@socket.unref()
+		@socket.destroy()
 	
-	cleanup: () ->
+	# Remove the player from the world.
+	cleanup: () =>
 		# TODO: Check if connected, delete connection
 		#@socket = null
 		#@vars = null
-	
+
+	quit: () =>
+		@disconnect()
+		@save (err) =>
+			@from_room()
+
 	setInterp: (interp) =>
 		@interp = Interp.get(interp)
 		@interp.onLoad this

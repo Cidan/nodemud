@@ -10,6 +10,7 @@ class Game extends Interp
 		@onMulti ['d', 'down'], @down
 		@on 'build', @build
 		@on 'save', @save
+		@on 'quit', @quit
 
 	parse: (player, input) =>
 		inputs = input.split(" ")
@@ -70,6 +71,11 @@ class Game extends Interp
 				player.send "Uh oh, there was an error saving you. The error has been logged."
 			else
 				player.send "Your player has been saved."
+	
+	quit: (player) =>
+		player.send "See ya!"
+		player.quit()
+
 	east: (player) =>
 		@move player, 'east'
 	west: (player) =>
