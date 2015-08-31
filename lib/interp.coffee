@@ -1,6 +1,7 @@
 walk = require 'walk'
 events = require 'events'
-# Every interp created has a local state just for that player.
+
+# Every interp created is stateless, and passes the player object around.
 class Interp extends events.EventEmitter
 
 	onMulti: (evs, fn) ->
