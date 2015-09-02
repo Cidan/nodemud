@@ -83,15 +83,15 @@ class Player extends Entity
 		@interp.prompt(this)
 
 	sendRaw: (text, cb) =>
-		@socket.write "#{text.color()}", "UTF8", cb
+		@socket.write color("#{text}"), "UTF8", cb
 	
 	send: (text, newline, cb) ->
 		if not text
 			log.error "Sending a player an empty text string!"
 		if newline
-			@socket.write "#{text.color()}\n\n", "UTF8", cb
+			@socket.write color("#{text}\n\n"), "UTF8", cb
 		else
-			@socket.write "#{text.color()}", "UTF8", cb
+			@socket.write color("#{text}"), "UTF8", cb
 		@prompt()
 
 	buffer: (text, newline) =>

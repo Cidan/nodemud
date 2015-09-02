@@ -55,7 +55,8 @@ class Room extends Entity
 		return @get 'name'
 
 	set_description: (description) =>
-		@set 'description', description
+		@set 'description_template', description
+		@set 'description', editor.render(description)
 
 	get_neighbor_coord: (dir) =>
 		coord = @get_coordinates()
