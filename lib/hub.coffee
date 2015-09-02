@@ -29,8 +29,8 @@ class Hub extends events.EventEmitter
 			global.server = new Server(config.get('port'))
 			server.on 'connection', (socket) ->
 				new_player = new Player()
-				new_player.setInterp "login"
 				new_player.setSocket socket
+				new_player.setInterp "login"
 			server.listen()
 
 		async.series ops
