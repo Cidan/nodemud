@@ -54,6 +54,7 @@ class Player extends Entity
 		@socket.end()
 		@socket.unref()
 		@socket.destroy()
+		@rl.close()
 	
 	# Remove the player from the world.
 	cleanup: () =>

@@ -26,11 +26,11 @@ class Hub extends events.EventEmitter
 		ops.push Interp.init
 		ops.push Room.load_all
 		ops.push (cb) ->
-			global.server = new Server(4000)
+			global.server = new Server(config.get('port'))
 			server.on 'connection', (socket) ->
 				new_player = new Player()
-				new_player.setSocket socket
 				new_player.setInterp "login"
+				new_player.setSocket socket
 			server.listen()
 
 		async.series ops
