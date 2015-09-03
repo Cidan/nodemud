@@ -16,6 +16,10 @@ Color.table = {
 		name: "clear",
 		ansi: "[0m"
 	},
+	"u": {
+		name: "underline",
+		ansi: "[0;04m"
+	},
 	"r": {
 		name: "red",
 		ansi: "[0;31m"
