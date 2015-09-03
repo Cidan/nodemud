@@ -46,18 +46,6 @@ class Room extends Entity
 			delete Room.matrix[@get('_x')][@get('_y')][@get('_z')]
 		return true
 
-	# Set the room name
-	set_name: (name) =>
-		@set 'name', name
-
-	# Get the room name
-	get_name: () =>
-		return @get 'name'
-
-	set_description: (description) =>
-		@set 'description_template', description
-		@set 'description', editor.render(description)
-
 	get_neighbor_coord: (dir) =>
 		coord = @get_coordinates()
 		switch dir

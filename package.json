@@ -11,6 +11,7 @@
     "printf": "^0.1.2",
     "simple-text-parser": "^0.1.2",
     "uuid": "^1.4.1",
+    "vantage": "^1.5.1",
     "walk": "^2.2.1"
   },
   "devDependencies": {},

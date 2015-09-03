@@ -7,6 +7,7 @@ global.color = require './color'
 global.log = require './log'
 global.map = require './map'
 global.editor = require './editor'
+global.cli = require './cli'
 
 # Classes
 global.Common = require './common'
@@ -32,7 +33,9 @@ class Hub extends events.EventEmitter
 				new_player.setSocket socket
 				new_player.setInterp "login"
 			server.listen()
-
+			cb()
+		ops.push cli.init
+		
 		async.series ops
 
 module.exports = new Hub
