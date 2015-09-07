@@ -8,30 +8,6 @@ class Player extends Entity
 		@_buffer = ""
 		@set 'type', 'player'
 
-	load: (cb) =>
-		md5 = Common.hash(@get('name'), 'md5')
-		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
-		fs.readFile filename, (err, saved_data) ->
-			if err
-				cb err
-			else
-				cb null, JSON.parse(saved_data)
-
-	save: (cb) =>
-		if @_saving
-			return
-		@_saving = true
-		md5 = Common.hash(@get('name'), 'md5')
-		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
-		fs.writeFile filename, JSON.stringify({
-			vars: @vars
-		}), (err) =>
-			@_saving = false
-			log.debug("Error saving #{@uuid()}: #{err.message}") if err
-			return cb(err) if err and cb
-			log.debug "#{@uuid()} saved."
-			cb(null) if cb
-
 	loadFromData: (data) =>
 		@vars = data.vars
 		@updateMetaData()
@@ -127,7 +103,7 @@ class Player extends Entity
 # Static methods
 Player.init = (cb) ->
 	log.info "Making player hash directories"
-	Common.make_hash_dir "#{config.get('data_dir')}players/", 3
+	Common.make_hash_dir "#{config.get('data_dir')}player/", 3
 	cb()
 
 module.exports = Player

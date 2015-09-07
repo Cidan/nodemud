@@ -31,7 +31,7 @@ class Login extends Interp
 			player.send "Let's try this again, what name shall you go by?"
 			return
 		player.set 'name', name
-		player.load (err, data) =>
+		player.load null, (err, data) =>
 			if not err
 				player.set 'tmp_player', data
 				player.send "Password:"

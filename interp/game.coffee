@@ -66,7 +66,7 @@ class Game extends Interp
 		@look(player)
 
 	save: (player) =>
-		player.save (err) ->
+		player.save null, (err) ->
 			if err
 				player.send "Uh oh, there was an error saving you. The error has been logged."
 			else
