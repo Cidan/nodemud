@@ -12,11 +12,12 @@ global.cli = require './cli'
 # Classes
 global.Common = require './common'
 global.Server = require './server'
+global.Entity = require './entity'
 global.Room = require './room'
 global.Player = require './player'
 global.Debug = require './debug'
 global.Interp = require './interp'
-
+global.NPC = require './npc'
 class Hub extends events.EventEmitter
 	constructor: (@server) ->
 
@@ -24,6 +25,7 @@ class Hub extends events.EventEmitter
 		ops = []
 		ops.push Room.init
 		ops.push Player.init
+		ops.push NPC.init
 		ops.push Interp.init
 		ops.push Room.load_all
 		ops.push (cb) ->

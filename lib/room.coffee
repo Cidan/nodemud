@@ -16,6 +16,7 @@ class Room extends Entity
 		
 		Room.set_defaults(this)
 		Room.list[this.uuid()] = this
+		@register()
 		@in_room = {}
 
 	# Set the coordinates of the room in the world space.

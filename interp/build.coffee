@@ -5,6 +5,8 @@ class Build extends Interp
 		@on 'build', @build
 		@on 'dig', @dig
 		@on 'set', @set
+		@on 'create', @create
+		@on 'edit', @edit
 
 	parse: (player, input) =>
 		inputs = input.split(" ")
@@ -23,16 +25,18 @@ class Build extends Interp
 	# stop the game interpreter from reading the
 	# input.
 	onGame: (player, args, cmd) =>
-		if cmd in @valid_dirs and not player.room.has_exit(cmd) and player.get('autodig')
+		if cmd in @valid_dirs and not player.room.has_exit(cmd) and player.autodig
 			@dig player, cmd
 		return true
 
 	prompt: (player) =>
 		text = "{R"
-		if player.get('autodig')
+		if player.autodig
 			text += "Autodig "
-		text += "Building{x #{player.room.vars.name} (#{player.room.vars._x} #{player.room.vars._y} #{player.room.vars._z})>"
-		player.sendRaw "\n\n#{text}"
+		text += "Building{x #{player.room.vars.name} (#{player.room.vars._x} #{player.room.vars._y} #{player.room.vars._z})"
+		if player.editing
+			text += "\nEDITING: #{player.editing.get('name')} (#{player.editing.get('type')} #{player.editing.uuid()})"
+		player.sendRaw "\n\n#{text}\n>"
 
 	build: (player, args) =>
 		player.set "building", false
@@ -40,11 +44,11 @@ class Build extends Interp
 		player.send "Building disabled."
 
 	autodig: (player, args) =>
-		if player.get('autodig')
-			player.set('autodig', false)
+		if player.autodig
+			player.autodig = false
 			player.send "Autodig disabled."
 		else
-			player.set('autodig', true)
+			player.autodig = true
 			player.send "Autodig enabled."
 
 	dig: (player, args) =>
@@ -67,7 +71,34 @@ class Build extends Interp
 		new_room.set_coordinates player.room.get_neighbor_coord(dir)
 		player.send "Room created #{dir}."
 
+	edit: (player, args) =>
+		return player.send("Usage: edit <uuid/room>") if not args
+		arg = args.split(' ')[0]
+		switch arg
+			when 'room'
+				player.editing = player.room
+			else
+				e = Entity.lookup(arg)
+				if not e
+					return player.send("No such UUID found: #{arg}")
+				else
+					player.editing = e
+		return player.send("Editing #{arg}")
+
 	set: (player, args) =>
 
+	# Create a new object or NPC.
+	create: (player, args) =>
+		return player.send("Usage: create <npc/object>") if not args
+		arg = args.split(' ')[0]
+		switch arg
+			when 'npc'
+				npc = new NPC
+				@edit player, npc.uuid()
+			when 'object'
+				player.send "Not yet"
+			else
+				player.send "Usage: create <npc/object>"
+		return
 
 module.exports = new Build

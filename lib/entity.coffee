@@ -10,6 +10,9 @@ class Entity
 		@vars.uuid = uuid.v4()
 		@vars.type = "entity"
 
+	register: () =>
+		Entity._all[@uuid()] = this
+
 	set: (k, v) =>
 		@vars[k] = v
 
@@ -61,6 +64,9 @@ class Entity
 			return cb(err) if err and cb
 			log.debug "#{@uuid()} saved."
 			cb(null) if cb
+
+Entity.lookup = (id) =>
+	return Entity._all[id]
 
 # Eventual globals
 Entity._all = {}

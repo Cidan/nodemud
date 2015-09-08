@@ -39,9 +39,9 @@ class Player extends Entity
 		#@vars = null
 
 	quit: () =>
-		@disconnect()
-		@save (err) =>
+		@save null, (err) =>
 			@from_room()
+			@disconnect()
 
 	setInterp: (interp) =>
 		@interp = Interp.get(interp)
