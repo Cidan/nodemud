@@ -1,12 +1,17 @@
 uuid = require 'uuid'
-events = require 'events'
+fs = require 'fs'
 
-class Entity extends events.EventEmitter
+class Entity
 	constructor: () ->
+		# Semi static entity variables, name, description, etc.
 		@vars = {}
+		# Dynamic data, inventory, NPC's in room, etc
+		@data = {}
 		@vars.uuid = uuid.v4()
 		@vars.type = "entity"
-		@contains = {}
+
+	register: () =>
+		Entity._all[@uuid()] = this
 
 	set: (k, v) =>
 		@vars[k] = v
@@ -19,31 +24,50 @@ class Entity extends events.EventEmitter
 
 	type: () =>
 		return @vars.type
-	
-	add_entity: (obj) =>
-		return false if not obj.type()
-		@contains[obj.type()] ?= {}
-		@contains[obj.type()][obj.uuid()] = obj
-		@emit 'add_entity', {
-			added: obj,
-			target: this
-		}
-	
-	remove_entity: (obj) =>
-		return false if not obj.type()
-		@contains[obj.type()] ?= {}
-		delete @contains[obj.type()][obj.uuid()]
-		@emit 'remove_entity', {
-			removed: obj,
-			target: this
-		}
 
-	has_entity: (obj) =>
-		return false if not obj.type()
-		@contrains[obj.type()] ?= {}
-		return @contrains[obj.type()][obj.uuid()]
+	set_name: (name) =>
+		@set 'name', name
+
+	get_name: () =>
+		return @get 'name'
+
+	set_description: (description) =>
+		@set 'description_template', description
+		@set 'description', editor.render(description)
 
 	updateMetaData: () ->
+
+	load: (opts, cb) =>
+		return cb(new Error("No type set on this object")) if not @get('type')
+		opts ?= {}
+		opts.uuid ?= false
+		hash = if opts.uuid then @uuid() else Common.hash(@get('name'), 'md5')
+		filename = "#{config.get('data_dir')}#{@get('type')}/#{hash[0]}/#{hash[1]}/#{hash[2]}/#{hash}"
+		fs.readFile filename, (err, saved_data) ->
+			return cb(err) if err and cb
+			cb null, JSON.parse(saved_data)
+
+	save: (opts, cb) =>
+		return cb(new Error("No type set on this object")) if not @get('type')
+		return cb(new Error("Object is already saving")) if @_saving
+		@_saving = true
+		opts ?= {}
+		opts.uuid ?= false
+		hash = if opts.uuid then @uuid() else Common.hash(@get('name'), 'md5')
+		filename = "#{config.get('data_dir')}#{@get('type')}/#{hash[0]}/#{hash[1]}/#{hash[2]}/#{hash}"
+		fs.writeFile filename, JSON.stringify({
+			vars: @vars,
+			data: @data
+		}), (err) =>
+			@_saving = false
+			log.debug("Error saving #{@uuid()}: #{err.message}") if err
+			return cb(err) if err and cb
+			log.debug "#{@uuid()} saved."
+			cb(null) if cb
+
+Entity.lookup = (id) =>
+	return Entity._all[id]
+
 # Eventual globals
 Entity._all = {}
 Entity._indexes = {}

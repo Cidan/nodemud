@@ -16,6 +16,6 @@ class Server
 			log.error(err)
 				
 		@server.listen @port
-		log.info "Server is read to rock on port {G" + @port + "{x"
+		log.info "Server is read to rock on port {G#{@port}{x"
 
 module.exports = Server

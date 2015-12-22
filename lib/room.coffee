@@ -8,6 +8,7 @@ Entity = require './entity'
 class Room extends Entity
 	constructor: (data) ->
 		super
+		@set 'type', 'room'
 		if data
 			@updateMetaData()
 			@vars = data
@@ -15,6 +16,8 @@ class Room extends Entity
 		
 		Room.set_defaults(this)
 		Room.list[this.uuid()] = this
+		@register()
+		@in_room = {}
 
 	# Set the coordinates of the room in the world space.
 	# Note, this makes the room live/active.
@@ -33,7 +36,7 @@ class Room extends Entity
 		Room.matrix[x][y][z] = this
 		@set "md5", Room.generate_location_hash(coord), true
 		if !nosave
-			@save()
+			@save {uuid: true}
 
 	# Get a list of the coords of this room, x, y, z.
 	get_coordinates: () =>
@@ -44,17 +47,6 @@ class Room extends Entity
 		try
 			delete Room.matrix[@get('_x')][@get('_y')][@get('_z')]
 		return true
-
-	# Set the room name
-	set_name: (name) =>
-		@set 'name', name
-
-	# Get the room name
-	get_name: () =>
-		return @get 'name'
-
-	set_description: (description) =>
-		@set 'description', description
 
 	get_neighbor_coord: (dir) =>
 		coord = @get_coordinates()
@@ -77,23 +69,17 @@ class Room extends Entity
 	has_exit: (dir) =>
 		coord = @get_coordinates()
 		return Room.exists(@get_neighbor_coord(dir))
-		
-	save: () =>
-		if @_saving
-			return
-		@_saving = true
-		log.debug "Staring room save of " + this.uuid() + " (" + this.get_name() + ")"
-		self = this
-		filename = "#{config.get('data_dir')}rooms/" + this.vars.md5[0] +
-		"/" + this.vars.md5[1] + 
-		"/" + this.vars.md5[2] +
-		"/" + this.vars.md5
-		fs.writeFile filename, JSON.stringify({
-			vars: @vars
-		}), (err) =>
-			@_saving = false
-			return log.error("Unable to save room #{@uuid()}: #{err.message}") if err
-			log.debug "#{@uuid()} saved."
+
+	add_entity: (entity) ->
+		type = entity.type()
+		if !@in_room[type]
+			@in_room[type] = {}
+		@in_room[type][entity.uuid()] = entity
+
+	remove_entity: (entity) ->
+		type = entity.type()
+		if @in_room[type]
+			delete @in_room[type][entity.uuid()]
 
 # Static class methods
 Room.matrix = []
@@ -101,7 +87,7 @@ Room.list = {}
 
 Room.init = (cb) ->
 	log.info "Creating room hash directories"
-	Common.make_hash_dir "#{config.get('data_dir')}rooms/", 3
+	Common.make_hash_dir "#{config.get('data_dir')}room/", 3
 	cb()
 
 Room.create_default = () ->
@@ -126,7 +112,7 @@ Room.exists = (coord) ->
 Room.load_all = (cb) ->
 	found = false
 	log.info "Loading previously saved rooms."
-	walker = walk.walk "#{config.get('data_dir')}/rooms"
+	walker = walk.walk "#{config.get('data_dir')}/room"
 	walker.on "file", (root, fileStats, next) ->
 		found = true
 		fs.readFile root + "/" + fileStats.name, (err, save_map) ->

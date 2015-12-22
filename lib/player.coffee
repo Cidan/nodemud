@@ -8,30 +8,6 @@ class Player extends Entity
 		@_buffer = ""
 		@set 'type', 'player'
 
-	load: (cb) =>
-		md5 = Common.hash(@get('name'), 'md5')
-		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
-		fs.readFile filename, (err, saved_data) ->
-			if err
-				cb err
-			else
-				cb null, JSON.parse(saved_data)
-
-	save: (cb) =>
-		if @_saving
-			return
-		@_saving = true
-		md5 = Common.hash(@get('name'), 'md5')
-		filename = "#{config.get('data_dir')}players/#{md5[0]}/#{md5[1]}/#{md5[2]}/#{md5}"
-		fs.writeFile filename, JSON.stringify({
-			vars: @vars
-		}), (err) =>
-			@_saving = false
-			log.debug("Error saving #{@uuid()}: #{err.message}") if err
-			return cb(err) if err and cb
-			log.debug "#{@uuid()} saved."
-			cb(null) if cb
-
 	loadFromData: (data) =>
 		@vars = data.vars
 		@updateMetaData()
@@ -54,6 +30,7 @@ class Player extends Entity
 		@socket.end()
 		@socket.unref()
 		@socket.destroy()
+		@rl.close()
 	
 	# Remove the player from the world.
 	cleanup: () =>
@@ -62,9 +39,9 @@ class Player extends Entity
 		#@vars = null
 
 	quit: () =>
-		@disconnect()
-		@save (err) =>
+		@save null, (err) =>
 			@from_room()
+			@disconnect()
 
 	setInterp: (interp) =>
 		@interp = Interp.get(interp)
@@ -83,15 +60,15 @@ class Player extends Entity
 		@interp.prompt(this)
 
 	sendRaw: (text, cb) =>
-		@socket.write "#{text.color()}", "UTF8", cb
+		@socket.write color("#{text}"), "UTF8", cb
 	
 	send: (text, newline, cb) ->
 		if not text
 			log.error "Sending a player an empty text string!"
 		if newline
-			@socket.write "#{text.color()}\n\n", "UTF8", cb
+			@socket.write color("#{text}\n\n"), "UTF8", cb
 		else
-			@socket.write "#{text.color()}", "UTF8", cb
+			@socket.write color("#{text}"), "UTF8", cb
 		@prompt()
 
 	buffer: (text, newline) =>
@@ -126,7 +103,7 @@ class Player extends Entity
 # Static methods
 Player.init = (cb) ->
 	log.info "Making player hash directories"
-	Common.make_hash_dir "#{config.get('data_dir')}players/", 3
+	Common.make_hash_dir "#{config.get('data_dir')}player/", 3
 	cb()
 
 module.exports = Player
