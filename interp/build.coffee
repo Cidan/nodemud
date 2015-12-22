@@ -71,6 +71,7 @@ class Build extends Interp
 		new_room.set_coordinates player.room.get_neighbor_coord(dir)
 		player.send "Room created #{dir}."
 
+	# Edit an entity.
 	edit: (player, args) =>
 		return player.send("Usage: edit <uuid/room>") if not args
 		arg = args.split(' ')[0]
@@ -84,8 +85,6 @@ class Build extends Interp
 				else
 					player.editing = e
 		return player.send("Editing #{arg}")
-
-	set: (player, args) =>
 
 	# Create a new object or NPC.
 	create: (player, args) =>
@@ -101,4 +100,7 @@ class Build extends Interp
 				player.send "Usage: create <npc/object>"
 		return
 
+	# Set a property of an entity.
+	set: (player, args) =>
+		return player.send("Not yet.")
 module.exports = new Build
