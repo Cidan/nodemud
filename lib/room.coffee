@@ -15,7 +15,6 @@ class Room extends Entity
 		
 		Room.set_defaults(this)
 		Room.list[this.uuid()] = this
-		@in_room = {}
 
 	# Set the coordinates of the room in the world space.
 	# Note, this makes the room live/active.
@@ -90,23 +89,11 @@ class Room extends Entity
 		"/" + this.vars.md5[2] +
 		"/" + this.vars.md5
 		fs.writeFile filename, JSON.stringify({
-			vars: @vars,
-			objs: @in_room.object
+			vars: @vars
 		}), (err) =>
 			@_saving = false
 			return log.error("Unable to save room #{@uuid()}: #{err.message}") if err
 			log.debug "#{@uuid()} saved."
-
-	add_entity: (entity) ->
-		type = entity.type()
-		if !@in_room[type]
-			@in_room[type] = {}
-		@in_room[type][entity.uuid()] = entity
-
-	remove_entity: (entity) ->
-		type = entity.type()
-		if @in_room[type]
-			delete @in_room[type][entity.uuid()]
 
 # Static class methods
 Room.matrix = []

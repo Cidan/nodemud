@@ -24,7 +24,7 @@ package management system, it seemed like a natural fit.
 - Virtually everything that has to do with players, including stats, health, combat, etc.
 - NPC's
 - Objects
-- Configuration (hard coded to my dev env, etc)
+- ~~Configuration (hard coded to my dev env, etc)~~
 
 ## Installation
 
